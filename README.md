@@ -50,6 +50,8 @@ sudo apt upgrade -y
 sudo apt install docker.io docker-compose -y
 ```
 
+**ConoHa security group**: In the ConoHa control panel, add the "IPv4v6-Web" rule to your server's security group so HTTP (port 80) and HTTPS (port 443) traffic can reach the VPS. Without this, the site will be unreachable even if Docker is running.
+
 ### First-time deploy (manual)
 
 1. Create app directory:
@@ -64,15 +66,15 @@ sudo apt install docker.io docker-compose -y
 
    ```bash
    cd /opt/addressbook
-   export BACKEND_IMAGE=ghcr.io/YOUR_USERNAME/ci-cd-hello-world/backend:latest
-   export FRONTEND_IMAGE=ghcr.io/YOUR_USERNAME/ci-cd-hello-world/frontend:latest
+   export BACKEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/backend:latest
+   export FRONTEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/frontend:latest
    export JWT_SECRET=your-secure-random-secret
 
    # If using private GHCR packages, login first:
-   echo "YOUR_GITHUB_PAT" | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+   echo "YOUR_GITHUB_PAT" | docker login ghcr.io -u JapaneseMasshole --password-stdin
 
-   docker compose -f docker-compose.deploy.yml pull
-   docker compose -f docker-compose.deploy.yml up -d
+   docker-compose -f docker-compose.deploy.yml pull
+   docker-compose -f docker-compose.deploy.yml up -d
    ```
 
 4. App: http://133.88.117.56
