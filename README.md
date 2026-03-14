@@ -42,13 +42,22 @@ Frontend dev server proxies `/api` to `localhost:8000`.
 ssh -i ~/.ssh/key-2026-03-12-22-03.pem root@133.88.117.56
 ```
 
-Update system and install Docker:
+Update system and install Docker (use Docker's official repo for Compose V2; the Ubuntu `docker-compose` package is outdated and incompatible with GHCR images):
 
 ```bash
 sudo apt update
 sudo apt upgrade -y
-sudo apt install docker.io docker-compose -y
+sudo apt install -y ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+Verify: `docker compose version` (V2 uses `docker compose`, not `docker-compose`).  
+If your VPS uses Debian instead of Ubuntu, use `https://download.docker.com/linux/debian` in the `curl` and `echo` commands above.
 
 **ConoHa security group**: In the ConoHa control panel, add the "IPv4v6-Web" rule to your server's security group so HTTP (port 80) and HTTPS (port 443) traffic can reach the VPS. Without this, the site will be unreachable even if Docker is running.
 
@@ -73,8 +82,8 @@ sudo apt install docker.io docker-compose -y
    # If using private GHCR packages, login first:
    echo "YOUR_GITHUB_PAT" | docker login ghcr.io -u JapaneseMasshole --password-stdin
 
-   docker-compose -f docker-compose.deploy.yml pull
-   docker-compose -f docker-compose.deploy.yml up -d
+   docker compose -f docker-compose.deploy.yml pull
+   docker compose -f docker-compose.deploy.yml up -d
    ```
 
 4. App: http://133.88.117.56
@@ -97,7 +106,7 @@ In GitHub repo **Settings → Secrets and variables → Actions**:
 
 - **Trigger**: Push to `main` or `master`
 - **Build**: Builds backend and frontend images, pushes to GHCR
-- **Deploy**: SSHs to VPS, pulls images, runs `docker-compose up -d`
+- **Deploy**: SSHs to VPS, pulls images, runs `docker compose up -d`
 
 ### GHCR packages
 
@@ -138,7 +147,7 @@ If you need an immediate rollback before reverting in git:
 
    ```bash
    cd /opt/addressbook
-   docker-compose -f docker-compose.deploy.yml down
+   docker compose -f docker-compose.deploy.yml down
    ```
 
 3. Deploy a known-good image tag (if you use version tags, e.g. `main-abc1234`):
@@ -147,8 +156,8 @@ If you need an immediate rollback before reverting in git:
    export BACKEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/backend:<previous-tag>
    export FRONTEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/frontend:<previous-tag>
    export JWT_SECRET="your-secret"
-   docker-compose -f docker-compose.deploy.yml pull
-   docker-compose -f docker-compose.deploy.yml up -d
+   docker compose -f docker-compose.deploy.yml pull
+   docker compose -f docker-compose.deploy.yml up -d
    ```
 
    **Note**: With the current `latest`-only setup, you must use Option 1 (git revert) unless you have previously tagged images. To enable tag-based rollback, add version tags (e.g. git SHA) to your workflow.
