@@ -105,6 +105,54 @@ In GitHub repo **Settings → Secrets and variables → Actions**:
 - For **private** repos: create a PAT with `read:packages`, add as `GHCR_TOKEN`
 - For **public** repos: packages may be public; if not, add `GHCR_TOKEN` as above
 
+## Rollback (when a new release goes wrong in Production)
+
+If a deployment to the VPS causes issues, use one of these approaches:
+
+### Option 1: Git revert + redeploy (recommended)
+
+Revert the bad commit and let CI/CD redeploy the previous version:
+
+```bash
+# Find the commit to revert (e.g. the last one)
+git log --oneline -5
+
+# Revert the problematic commit
+git revert <commit-hash> --no-edit
+git push origin main
+```
+
+GitHub Actions will build and deploy the reverted code automatically.
+
+### Option 2: Manual rollback on VPS
+
+If you need an immediate rollback before reverting in git:
+
+1. SSH into the VPS:
+
+   ```bash
+   ssh -i ~/.ssh/key-2026-03-12-22-03.pem root@133.88.117.56
+   ```
+
+2. Stop the current containers:
+
+   ```bash
+   cd /opt/addressbook
+   docker compose -f docker-compose.deploy.yml down
+   ```
+
+3. Deploy a known-good image tag (if you use version tags, e.g. `main-abc1234`):
+
+   ```bash
+   export BACKEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/backend:<previous-tag>
+   export FRONTEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/frontend:<previous-tag>
+   export JWT_SECRET="your-secret"
+   docker compose -f docker-compose.deploy.yml pull
+   docker compose -f docker-compose.deploy.yml up -d
+   ```
+
+   **Note**: With the current `latest`-only setup, you must use Option 1 (git revert) unless you have previously tagged images. To enable tag-based rollback, add version tags (e.g. git SHA) to your workflow.
+
 ## SSH access
 
 ```bash
