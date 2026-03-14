@@ -82,7 +82,7 @@ sudo apt install docker.io docker-compose -y
 ## GitHub Actions CI/CD
 
 ### Required secrets
-
+#### Important
 In GitHub repo **Settings → Secrets and variables → Actions**:
 
 | Secret       | Description                                      |
