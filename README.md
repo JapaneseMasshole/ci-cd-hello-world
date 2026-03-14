@@ -97,7 +97,7 @@ In GitHub repo **Settings → Secrets and variables → Actions**:
 
 - **Trigger**: Push to `main` or `master`
 - **Build**: Builds backend and frontend images, pushes to GHCR
-- **Deploy**: SSHs to VPS, pulls images, runs `docker compose up -d`
+- **Deploy**: SSHs to VPS, pulls images, runs `docker-compose up -d`
 
 ### GHCR packages
 
@@ -138,7 +138,7 @@ If you need an immediate rollback before reverting in git:
 
    ```bash
    cd /opt/addressbook
-   docker compose -f docker-compose.deploy.yml down
+   docker-compose -f docker-compose.deploy.yml down
    ```
 
 3. Deploy a known-good image tag (if you use version tags, e.g. `main-abc1234`):
@@ -147,8 +147,8 @@ If you need an immediate rollback before reverting in git:
    export BACKEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/backend:<previous-tag>
    export FRONTEND_IMAGE=ghcr.io/japanesemasshole/ci-cd-hello-world/frontend:<previous-tag>
    export JWT_SECRET="your-secret"
-   docker compose -f docker-compose.deploy.yml pull
-   docker compose -f docker-compose.deploy.yml up -d
+   docker-compose -f docker-compose.deploy.yml pull
+   docker-compose -f docker-compose.deploy.yml up -d
    ```
 
    **Note**: With the current `latest`-only setup, you must use Option 1 (git revert) unless you have previously tagged images. To enable tag-based rollback, add version tags (e.g. git SHA) to your workflow.

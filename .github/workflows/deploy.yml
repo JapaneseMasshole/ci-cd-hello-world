@@ -104,5 +104,5 @@ jobs:
               echo "${{ secrets.GHCR_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
             fi
 
-            docker compose -f docker-compose.deploy.yml pull
-            docker compose -f docker-compose.deploy.yml up -d
+            docker-compose -f docker-compose.deploy.yml pull
+            docker-compose -f docker-compose.deploy.yml up -d
