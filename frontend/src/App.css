@@ -1,0 +1,229 @@
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app.auth-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.form-section,
+.list-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+
+/* Login / Register */
+.login-form {
+  width: 100%;
+  max-width: 360px;
+  padding: 32px;
+  background: var(--code-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.login-form h2 {
+  margin: 0 0 8px;
+}
+
+.login-subtitle {
+  color: var(--text);
+  margin-bottom: 24px;
+  font-size: 0.95em;
+}
+
+.login-footer {
+  margin-top: 20px;
+  font-size: 0.9em;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btn-link:hover {
+  color: var(--accent-border);
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-h);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 1em;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-bg);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.form-error {
+  color: #dc2626;
+  font-size: 0.9em;
+  margin: 12px 0;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-border);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-h);
+}
+
+.btn-outline:hover {
+  background: var(--code-bg);
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85em;
+}
+
+/* Contact form */
+.contact-form h3,
+.contact-list h3 {
+  margin: 0 0 20px;
+  font-size: 20px;
+}
+
+.contact-form .form-row {
+  margin-bottom: 16px;
+}
+
+.contact-form .btn {
+  margin-top: 8px;
+}
+
+/* Contact list */
+.contact-list .empty-state {
+  color: var(--text);
+  font-style: italic;
+  padding: 24px;
+}
+
+.contact-table-wrap {
+  overflow-x: auto;
+}
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contact-table th,
+.contact-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-table th {
+  font-weight: 500;
+  color: var(--text-h);
+  font-size: 0.9em;
+}
+
+.contact-table td {
+  color: var(--text);
+}
+
+.contact-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  .contact-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}

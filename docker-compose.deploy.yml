@@ -1,0 +1,23 @@
+# Production deploy - uses pre-built images from GHCR
+# Set BACKEND_IMAGE and FRONTEND_IMAGE env vars before running
+
+services:
+  backend:
+    image: ${BACKEND_IMAGE}
+    restart: unless-stopped
+    environment:
+      - DATABASE_DIR=/app/data
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+    volumes:
+      - backend_data:/app/data
+
+  frontend:
+    image: ${FRONTEND_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
