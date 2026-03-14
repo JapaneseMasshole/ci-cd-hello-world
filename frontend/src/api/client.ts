@@ -93,6 +93,20 @@ export async function createContact(contact: ContactCreate): Promise<Contact> {
   return res.json();
 }
 
+export async function updateContact(id: number, contact: ContactCreate): Promise<Contact> {
+  const res = await fetch(`${API_BASE}/contacts/${id}`, {
+    method: 'PUT',
+    headers: getHeaders(true),
+    body: JSON.stringify(contact),
+  });
+  if (!res.ok) {
+    if (res.status === 401) throw new Error('Unauthorized');
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || 'Failed to update contact');
+  }
+  return res.json();
+}
+
 export async function deleteContact(id: number): Promise<void> {
   const res = await fetch(`${API_BASE}/contacts/${id}`, {
     method: 'DELETE',

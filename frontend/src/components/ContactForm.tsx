@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import type { ContactCreate } from '../api/client';
+import { useState, useEffect } from 'react';
+import type { Contact, ContactCreate } from '../api/client';
 
 interface ContactFormProps {
   prefectures: string[];
+  editing?: Contact | null;
   onSubmit: (contact: ContactCreate) => Promise<void>;
+  onSubmitUpdate?: (id: number, contact: ContactCreate) => Promise<void>;
+  onCancelEdit?: () => void;
 }
 
 const initial: ContactCreate = {
@@ -16,8 +19,24 @@ const initial: ContactCreate = {
   postal_code: '',
 };
 
-export function ContactForm({ prefectures, onSubmit }: ContactFormProps) {
+export function ContactForm({ prefectures, editing, onSubmit, onSubmitUpdate, onCancelEdit }: ContactFormProps) {
   const [form, setForm] = useState<ContactCreate>(initial);
+
+  useEffect(() => {
+    if (editing) {
+      setForm({
+        first_name: editing.first_name,
+        last_name: editing.last_name,
+        email: editing.email,
+        phone: editing.phone,
+        city: editing.city,
+        prefecture: editing.prefecture,
+        postal_code: editing.postal_code,
+      });
+    } else {
+      setForm(initial);
+    }
+  }, [editing]);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,10 +50,14 @@ export function ContactForm({ prefectures, onSubmit }: ContactFormProps) {
     setError('');
     setIsLoading(true);
     try {
-      await onSubmit(form);
+      if (editing && onSubmitUpdate) {
+        await onSubmitUpdate(editing.id, form);
+      } else {
+        await onSubmit(form);
+      }
       setForm(initial);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add contact');
+      setError(err instanceof Error ? err.message : (editing ? 'Failed to update contact' : 'Failed to add contact'));
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +65,7 @@ export function ContactForm({ prefectures, onSubmit }: ContactFormProps) {
 
   return (
     <form className="contact-form" onSubmit={handleSubmit}>
-      <h3>Add contact</h3>
+      <h3>{editing ? 'Edit contact' : 'Add contact'}</h3>
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="first_name">First name</label>
@@ -126,9 +149,16 @@ export function ContactForm({ prefectures, onSubmit }: ContactFormProps) {
         </div>
       </div>
       {error && <p className="form-error">{error}</p>}
-      <button type="submit" disabled={isLoading} className="btn btn-primary">
-        {isLoading ? 'Adding...' : 'Add contact'}
-      </button>
+      <div className="form-actions">
+        <button type="submit" disabled={isLoading} className="btn btn-primary">
+          {isLoading ? (editing ? 'Updating...' : 'Adding...') : (editing ? 'Update contact' : 'Add contact')}
+        </button>
+        {editing && onCancelEdit && (
+          <button type="button" className="btn btn-outline" onClick={onCancelEdit}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

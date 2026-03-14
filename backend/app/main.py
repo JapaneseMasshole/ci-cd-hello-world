@@ -106,6 +106,32 @@ def create_contact(
     return contact
 
 
+@app.put("/api/contacts/{contact_id}", response_model=ContactResponse)
+def update_contact(
+    contact_id: int,
+    contact_in: ContactCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    contact = (
+        db.query(Contact)
+        .filter(Contact.id == contact_id, Contact.user_id == current_user.id)
+        .first()
+    )
+    if not contact:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Contact not found")
+    contact.first_name = contact_in.first_name
+    contact.last_name = contact_in.last_name
+    contact.email = contact_in.email
+    contact.phone = contact_in.phone
+    contact.city = contact_in.city
+    contact.prefecture = contact_in.prefecture
+    contact.postal_code = contact_in.postal_code
+    db.commit()
+    db.refresh(contact)
+    return contact
+
+
 @app.delete("/api/contacts/{contact_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_contact(
     contact_id: int,

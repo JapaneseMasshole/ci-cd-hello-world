@@ -7,6 +7,7 @@ import {
   getPrefectures,
   getContacts,
   createContact,
+  updateContact,
   deleteContact,
   type Contact,
 } from './api/client';
@@ -20,6 +21,7 @@ function App() {
   const [prefectures, setPrefectures] = useState<string[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [contactsError, setContactsError] = useState<string | null>(null);
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
 
   const handleLogin = useCallback((newToken: string) => {
     localStorage.setItem(TOKEN_KEY, newToken);
@@ -77,18 +79,27 @@ function App() {
         <section className="form-section">
           <ContactForm
             prefectures={prefectures}
+            editing={editingContact}
             onSubmit={async (c) => {
               await createContact(c);
               refreshContacts();
             }}
+            onSubmitUpdate={async (id, c) => {
+              await updateContact(id, c);
+              setEditingContact(null);
+              refreshContacts();
+            }}
+            onCancelEdit={() => setEditingContact(null)}
           />
         </section>
         <section className="list-section">
           {contactsError && <p className="form-error">{contactsError}</p>}
           <ContactList
             contacts={contacts}
+            onEdit={(c) => setEditingContact(c)}
             onDelete={async (id) => {
               await deleteContact(id);
+              if (editingContact?.id === id) setEditingContact(null);
               refreshContacts();
             }}
           />

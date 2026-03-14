@@ -3,10 +3,11 @@ import type { Contact } from '../api/client';
 
 interface ContactListProps {
   contacts: Contact[];
+  onEdit: (contact: Contact) => void;
   onDelete: (id: number) => Promise<void>;
 }
 
-export function ContactList({ contacts, onDelete }: ContactListProps) {
+export function ContactList({ contacts, onEdit, onDelete }: ContactListProps) {
   const [deleting, setDeleting] = useState<number | null>(null);
 
   async function handleDelete(id: number) {
@@ -47,14 +48,23 @@ export function ContactList({ contacts, onDelete }: ContactListProps) {
                     {c.city}, {c.prefecture} {c.postal_code}
                   </td>
                   <td>
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(c.id)}
-                      disabled={deleting === c.id}
-                    >
-                      {deleting === c.id ? '...' : 'Delete'}
-                    </button>
+                    <div className="contact-actions">
+                      <button
+                        type="button"
+                        className="btn btn-outline btn-sm"
+                        onClick={() => onEdit(c)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(c.id)}
+                        disabled={deleting === c.id}
+                      >
+                        {deleting === c.id ? '...' : 'Delete'}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

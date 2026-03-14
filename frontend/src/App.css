@@ -181,8 +181,19 @@
   margin-bottom: 16px;
 }
 
-.contact-form .btn {
+.form-actions {
+  display: flex;
+  gap: 12px;
   margin-top: 8px;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.contact-form .btn {
+  margin-top: 0;
 }
 
 /* Contact list */
