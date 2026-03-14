@@ -67,6 +67,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set lowercase repo for GHCR
+        run: echo "REPO_LOWER=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Prepare VPS directory
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -95,8 +98,8 @@ jobs:
             mkdir -p /opt/addressbook
             cd /opt/addressbook
 
-            export BACKEND_IMAGE=${{ env.REGISTRY }}/${{ github.repository }}/backend:latest
-            export FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ github.repository }}/frontend:latest
+            export BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/backend:latest
+            export FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/frontend:latest
             export JWT_SECRET="${{ secrets.JWT_SECRET }}"
 
             # Login to GHCR (required for private packages; use GHCR_TOKEN secret)
