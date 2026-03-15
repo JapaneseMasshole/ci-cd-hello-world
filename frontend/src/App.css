@@ -115,6 +115,10 @@
   gap: 16px;
 }
 
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
 .form-error {
   color: #dc2626;
   font-size: 0.9em;

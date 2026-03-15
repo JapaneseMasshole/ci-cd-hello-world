@@ -27,6 +27,8 @@ class Contact(Base):
     last_name = Column(String(64), nullable=False)
     email = Column(String(256), nullable=False)
     phone = Column(String(32), nullable=False)
+    street_address_1 = Column(String(256), nullable=False, default="")
+    street_address_2 = Column(String(256), nullable=False, default="")
     city = Column(String(128), nullable=False)
     prefecture = Column(String(64), nullable=False)
     postal_code = Column(String(16), nullable=False)

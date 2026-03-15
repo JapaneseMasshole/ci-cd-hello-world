@@ -52,6 +52,8 @@ export interface Contact {
   last_name: string;
   email: string;
   phone: string;
+  street_address_1: string;
+  street_address_2: string;
   city: string;
   prefecture: string;
   postal_code: string;
@@ -63,6 +65,8 @@ export interface ContactCreate {
   last_name: string;
   email: string;
   phone: string;
+  street_address_1: string;
+  street_address_2: string;
   city: string;
   prefecture: string;
   postal_code: string;

@@ -45,6 +45,8 @@ export function ContactList({ contacts, onEdit, onDelete }: ContactListProps) {
                   <td>{c.email}</td>
                   <td>{c.phone}</td>
                   <td>
+                    {[c.street_address_1, c.street_address_2].filter(Boolean).join(', ')}
+                    {[c.street_address_1, c.street_address_2].some(Boolean) && ', '}
                     {c.city}, {c.prefecture} {c.postal_code}
                   </td>
                   <td>

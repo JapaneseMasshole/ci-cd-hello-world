@@ -27,6 +27,8 @@ class ContactCreate(BaseModel):
     last_name: str
     email: EmailStr
     phone: str
+    street_address_1: str = ""
+    street_address_2: str = ""
     city: str
     prefecture: str
     postal_code: str
@@ -38,6 +40,8 @@ class ContactResponse(BaseModel):
     last_name: str
     email: str
     phone: str
+    street_address_1: str
+    street_address_2: str
     city: str
     prefecture: str
     postal_code: str

@@ -96,6 +96,8 @@ def create_contact(
         last_name=contact_in.last_name,
         email=contact_in.email,
         phone=contact_in.phone,
+        street_address_1=contact_in.street_address_1 or "",
+        street_address_2=contact_in.street_address_2 or "",
         city=contact_in.city,
         prefecture=contact_in.prefecture,
         postal_code=contact_in.postal_code,
@@ -124,6 +126,8 @@ def update_contact(
     contact.last_name = contact_in.last_name
     contact.email = contact_in.email
     contact.phone = contact_in.phone
+    contact.street_address_1 = contact_in.street_address_1 or ""
+    contact.street_address_2 = contact_in.street_address_2 or ""
     contact.city = contact_in.city
     contact.prefecture = contact_in.prefecture
     contact.postal_code = contact_in.postal_code

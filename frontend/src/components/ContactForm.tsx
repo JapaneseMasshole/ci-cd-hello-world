@@ -14,6 +14,8 @@ const initial: ContactCreate = {
   last_name: '',
   email: '',
   phone: '',
+  street_address_1: '',
+  street_address_2: '',
   city: '',
   prefecture: '',
   postal_code: '',
@@ -29,6 +31,8 @@ export function ContactForm({ prefectures, editing, onSubmit, onSubmitUpdate, on
         last_name: editing.last_name,
         email: editing.email,
         phone: editing.phone,
+        street_address_1: editing.street_address_1 ?? '',
+        street_address_2: editing.street_address_2 ?? '',
         city: editing.city,
         prefecture: editing.prefecture,
         postal_code: editing.postal_code,
@@ -107,6 +111,28 @@ export function ContactForm({ prefectures, editing, onSubmit, onSubmitUpdate, on
             value={form.phone}
             onChange={(e) => update('phone', e.target.value)}
             required
+          />
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-group form-group-full">
+          <label htmlFor="street_address_1">Street Address 1</label>
+          <input
+            id="street_address_1"
+            type="text"
+            value={form.street_address_1}
+            onChange={(e) => update('street_address_1', e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-group form-group-full">
+          <label htmlFor="street_address_2">Street Address 2</label>
+          <input
+            id="street_address_2"
+            type="text"
+            value={form.street_address_2}
+            onChange={(e) => update('street_address_2', e.target.value)}
           />
         </div>
       </div>
